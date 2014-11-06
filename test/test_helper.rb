@@ -10,6 +10,17 @@ module TestApp
   end
 end
 
+require 'active_model'
+
+class Model
+  include ActiveModel::Model
+  include ActiveModel::Validations
+
+  attr_accessor :required_attribute
+
+  validates :required_attribute, presence: true
+end
+
 TestApp::Application.initialize!
 
 require "rails/test_help"
