@@ -1,5 +1,3 @@
-require "rails"
-
 module TestApp
   class Application < ::Rails::Application
     config.secret_key_base = "abc123"
