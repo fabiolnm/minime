@@ -35,6 +35,30 @@ class ModelsController < ApplicationController
   end
 end
 
+
+require "action_mailer/railtie"
+
+class SimpleMailer < ActionMailer::Base
+  def welcome(name)
+    mail from: 'self@mini.me', to: 'myself@mini.me' do |format|
+      format.text { render inline: "I'm talking with #{name}" }
+      format.html { render inline: "<h1>I'm talking with #{name}</h1>" }
+    end
+  end
+
+  def plain_welcome(name)
+    mail from: 'self@mini.me', to: 'myself@mini.me' do |format|
+      format.text { render inline: "I'm talking with #{name}" }
+    end
+  end
+
+  def html_welcome(name)
+    mail from: 'self@mini.me', to: 'myself@mini.me' do |format|
+      format.html { render inline: "<h1>I'm talking with #{name}</h1>" }
+    end
+  end
+end
+
 TestApp::Application.initialize!
 
 TestApp::Application.routes.draw do
