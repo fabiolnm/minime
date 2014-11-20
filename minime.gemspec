@@ -18,6 +18,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  # assert_select / assert_select_email will be moved from Rails 4.2 to separate gem
+  spec.add_dependency 'rails-dom-testing'
+
   spec.add_development_dependency "minitest", "~> 5.4"
   spec.add_development_dependency "railties", "~> 4.1"
   spec.add_development_dependency "bundler", "~> 1.7"

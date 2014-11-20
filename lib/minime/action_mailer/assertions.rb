@@ -1,6 +1,6 @@
 class ActionMailer::TestCase
   include ActionView::Helpers::NumberHelper
-  include ActionDispatch::Assertions::SelectorAssertions
+  include Rails::Dom::Testing::Assertions
 
   def assert_mailed(action, mail_spec={})
     email = send_action action
