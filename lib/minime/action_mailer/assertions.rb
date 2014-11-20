@@ -28,7 +28,7 @@ class ActionMailer::TestCase
     assert_equal spec, email_values
 
     if block_given?
-      email.deliver
+      email.deliver_now
 
       assert_select_email do
         yield
