@@ -56,7 +56,7 @@ class ActiveSupport::TestCase
                  #   }
                  # end
                  #
-                 self.class.name.gsub("::model", "").constantize.new
+                 self.class.name.gsub(/::model.*/, "").constantize.new
                end
   end
 
