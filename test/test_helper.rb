@@ -19,9 +19,12 @@ class Model
   include ActiveModel::Model
   include ActiveModel::Validations
 
-  attr_accessor :required_attribute
+  attr_accessor :required_attribute,
+    :confirmable_attribute,
+    :confirmable_attribute_confirmation
 
   validates :required_attribute, presence: true
+  validates :confirmable_attribute, confirmation: true
 end
 
 class ApplicationController < ActionController::Base

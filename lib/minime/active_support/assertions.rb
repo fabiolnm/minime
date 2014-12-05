@@ -37,6 +37,17 @@ class ActiveSupport::TestCase
     assert_invalid
   end
 
+  def assert_validates_confirmation_of(attribute, model=nil)
+    validating "#{attribute}_confirmation", confirmation: { attribute: attribute.to_s.humanize }
+
+    with_subject model
+    with({ attribute => '123', "#{attribute}_confirmation" => '456' })
+    assert_invalid
+
+    with({ attribute => '123', "#{attribute}_confirmation" => '123' })
+    assert_valid
+  end
+
   def validating(attr, opts)
     @attribute  = attr
     @validation = opts
@@ -78,7 +89,7 @@ class ActiveSupport::TestCase
 
   private
   def errors
-    @subject.errors.messages[@attribute] || []
+    @subject.errors.messages[@attribute.to_sym] || []
   end
 
   # assert_invalid_with { greater_than: { count: value } }
