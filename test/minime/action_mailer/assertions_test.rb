@@ -36,4 +36,24 @@ describe SimpleMailer do
       end
     end
   end
+
+  describe "ActionMailer::Base.deliveries state before each test" do
+    def backup_and_clear_previous_deliveries
+      # emulates state left behind by another test
+      assert_mailed [:html_welcome, 'myself'], from: 'self@mini.me', to: 'myself@mini.me' do
+        assert ActionMailer::Base.deliveries.count > 0
+      end
+
+      # call minime callback
+      super
+    end
+
+    it "is ensured to be clear" do
+      ActionMailer::Base.deliveries.must_be_empty
+    end
+
+    teardown do
+      assert ActionMailer::Base.deliveries.count > 0
+    end
+  end
 end

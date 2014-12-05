@@ -2,6 +2,13 @@ class ActionMailer::TestCase
   include ActionView::Helpers::NumberHelper
   include Rails::Dom::Testing::Assertions
 
+  # Avoids test to be affected by ActionMailer deliveries state
+  setup :backup_and_clear_previous_deliveries
+
+  def before_teardown
+    restore_previous_deliveries
+  end
+
   def assert_mailed(action, mail_spec={})
     email = send_action action
 
@@ -109,5 +116,14 @@ class ActionMailer::TestCase
       charset:      default_charset,
       content_type: 'text/html'
     }
+  end
+
+  def backup_and_clear_previous_deliveries
+    @previous_deliveries = ActionMailer::Base.deliveries.dup
+    ActionMailer::Base.deliveries.clear
+  end
+
+  def restore_previous_deliveries
+    ActionMailer::Base.deliveries = @previous_deliveries
   end
 end
