@@ -25,4 +25,5 @@ module Minitest::Expectations
   #   end
   #
   infect_an_assertion :assert_validates_presence_of, :must_validate_presence_of
+  infect_an_assertion :assert_validates_confirmation_of, :must_validate_confirmation_of
 end
