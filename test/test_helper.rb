@@ -61,6 +61,20 @@ end
 
 TestApp::Application.initialize!
 
+I18n.backend.store_translations :en, {
+  simple_mailer: {
+    welcome: {
+      subject: 'Welcome!'
+    },
+    html_welcome: {
+      subject: 'Welcome!'
+    },
+    plain_welcome: {
+      subject: 'Welcome!'
+    }
+  }
+}
+
 TestApp::Application.routes.draw do
   get 'valid', to: 'models#valid'
 end

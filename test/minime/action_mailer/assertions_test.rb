@@ -8,22 +8,6 @@ describe SimpleMailer do
   end
 
   describe "with proper subject" do
-    before do
-      I18n.backend.store_translations :en, {
-        simple_mailer: {
-          welcome: {
-            subject: 'Welcome!'
-          },
-          html_welcome: {
-            subject: 'Welcome!'
-          },
-          plain_welcome: {
-            subject: 'Welcome!'
-          }
-        }
-      }
-    end
-
     it "validates multipart email" do
       assert_mailed [:welcome, 'myself'],
         from: 'self@mini.me', to: 'myself@mini.me',
