@@ -27,17 +27,18 @@ class ActiveSupport::TestCase
   #   end
   #
   def assert_validates_presence_of(attribute, model=nil)
-    validating :blank
+    validating attribute, :blank
 
     with_subject model
-    with attribute, nil
+    with({ attribute => nil })
     assert_invalid
 
-    with attribute, ""
+    with({ attribute => "" })
     assert_invalid
   end
 
-  def validating(opts)
+  def validating(attr, opts)
+    @attribute  = attr
     @validation = opts
   end
 
@@ -60,9 +61,9 @@ class ActiveSupport::TestCase
                end
   end
 
-  def with(attr, value)
-    @attribute, @value = attr, value
-    @subject.send "#{attr}=", value
+  def with(values)
+    @values = values
+    values.each {|attr,value| @subject.send "#{attr}=", value }
   end
 
   def assert_invalid
@@ -94,14 +95,12 @@ class ActiveSupport::TestCase
   end
 
   def assertion_message
-    val = if @value.nil?
-            :nil
-          elsif @value.blank?
-            :blank
-          else
-            @value
-          end
+    message { "validating #{@subject.class.name} with:\n#{attributes_values}" }
+  end
 
-    message { "validating #{@subject.class.name} with :#{@attribute} set to #{val}" }
+  def attributes_values
+    @values.map { |attr,val|
+      ":#{attr} set to #{val.nil? ? :nil : (val.blank? ? :blank : val)}"
+    }.join "\n"
   end
 end
