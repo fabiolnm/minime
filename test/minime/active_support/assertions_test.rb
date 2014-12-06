@@ -39,18 +39,18 @@ describe Model, :model do
 
   describe "attribute inclusion in a list of values" do
     it "validates explicit local object" do
-      assert_validates_inclusion_of :closed_list_attribute, { in: %w{a b c} }, Model.new
+      assert_validates_inclusion_of({ closed_list_attribute: { in: %w{a b c} } }, Model.new)
     end
 
     it "validates described model" do
-      assert_validates_inclusion_of :closed_list_attribute, in: ['a', 'b', 'c']
+      assert_validates_inclusion_of closed_list_attribute: { in: ['a', 'b', 'c'] }
     end
 
     describe "explicit subject" do
       subject { Model.new }
 
       it "validates attribute" do
-        assert_validates_inclusion_of :closed_list_attribute, in: 'a'..'c'
+        assert_validates_inclusion_of closed_list_attribute: { in: 'a'..'c' }
       end
     end
   end

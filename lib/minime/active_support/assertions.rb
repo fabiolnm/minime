@@ -48,8 +48,13 @@ class ActiveSupport::TestCase
     assert_valid
   end
 
-  def assert_validates_inclusion_of(attribute, opts={}, model=nil)
-    assert opts.is_a?(Hash), "Missing inclusion options"
+  def assert_validates_inclusion_of(opts, model=nil)
+    assert opts.is_a?(Hash),
+      "Inclusion options must be in form { attribute => validation_options }"
+
+    attribute = opts.keys.first
+    opts = opts[attribute]
+
     assert opts[:in].present?, "Missing 'in' assertion option"
 
     validating attribute, :inclusion

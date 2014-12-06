@@ -36,4 +36,22 @@ describe Model, :model do
       end
     end
   end
+
+  describe "attribute inclusion in a list of values" do
+    it "validates explicit local object" do
+      Model.new.must_validate_inclusion_of closed_list_attribute: { in: %w{a b c} }
+    end
+
+    it "validates described model" do
+      must_validate_inclusion_of closed_list_attribute: { in: ['a', 'b', 'c'] }
+    end
+
+    describe "explicit subject" do
+      subject { Model.new }
+
+      it "validates attribute" do
+        must_validate_inclusion_of closed_list_attribute: { in: 'a'..'c' }
+      end
+    end
+  end
 end
