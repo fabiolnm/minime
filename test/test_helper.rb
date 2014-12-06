@@ -21,10 +21,13 @@ class Model
 
   attr_accessor :required_attribute,
     :confirmable_attribute,
-    :confirmable_attribute_confirmation
+    :confirmable_attribute_confirmation,
+    :closed_list_attribute
 
   validates :required_attribute, presence: true
   validates :confirmable_attribute, confirmation: true
+
+  validates :closed_list_attribute, inclusion: { in: 'a'..'c' }
 end
 
 class ApplicationController < ActionController::Base
@@ -33,7 +36,10 @@ end
 
 class ModelsController < ApplicationController
   def valid
-    @valid_model = Model.new required_attribute: 'foo'
+    @valid_model = Model
+      .new required_attribute: 'foo',
+        closed_list_attribute: 'a'
+
     head :ok
   end
 end

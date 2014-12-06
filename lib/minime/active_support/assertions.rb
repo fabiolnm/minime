@@ -48,6 +48,30 @@ class ActiveSupport::TestCase
     assert_valid
   end
 
+  def assert_validates_inclusion_of(attribute, opts={}, model=nil)
+    assert opts.is_a?(Hash), "Missing inclusion options"
+    assert opts[:in].present?, "Missing 'in' assertion option"
+
+    validating attribute, :inclusion
+
+    with_subject model
+    with({ attribute => "not_in_list_#{Random.srand}" })
+    assert_invalid
+
+    @opt = nil
+    inclusion_failure_message = error_message
+
+    refute opts[:in].any? { |opt|
+      @opt = opt
+
+      with({ attribute => opt })
+      @subject.valid?
+
+      # for valid values, test fails if inclusion_failure_message is detected
+      errors.include? inclusion_failure_message
+    }, "'#{@opt}' could not be validated in list '#{opts[:in].to_a}'"
+  end
+
   def validating(attr, opts)
     @attribute  = attr
     @validation = opts
