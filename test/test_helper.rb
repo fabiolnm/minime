@@ -22,12 +22,15 @@ class Model
   attr_accessor :required_attribute,
     :confirmable_attribute,
     :confirmable_attribute_confirmation,
-    :closed_list_attribute
+    :closed_list_attribute,
+    :greater_than_five_attribute
 
   validates :required_attribute, presence: true
   validates :confirmable_attribute, confirmation: true
 
   validates :closed_list_attribute, inclusion: { in: 'a'..'c' }
+
+  validates :greater_than_five_attribute, numericality: { greater_than: 5 }
 end
 
 class ApplicationController < ActionController::Base
@@ -38,7 +41,8 @@ class ModelsController < ApplicationController
   def valid
     @valid_model = Model
       .new required_attribute: 'foo',
-        closed_list_attribute: 'a'
+        closed_list_attribute: 'a',
+        greater_than_five_attribute: 5.01
 
     head :ok
   end

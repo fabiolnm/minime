@@ -77,6 +77,30 @@ class ActiveSupport::TestCase
     }, "'#{@opt}' could not be validated in list '#{opts[:in].to_a}'"
   end
 
+  def assert_validates_numericality_of(opts, model=nil)
+    assert opts.is_a?(Hash),
+      "Numericality options must be in form { attribute => validation_options }"
+
+    attribute = opts.keys.first
+    opts = opts[attribute]
+
+    valid_assertions = %w{
+      is_a_number is_an_integer id_odd is_even is_equal_to
+      is_greater_than is_greater_than_or_equal_to
+      is_less_than is_less_than_or_equal_to
+    }
+
+    with_subject model
+
+    opts.each do |condition, value|
+      raise "Invalid condition: #{condition}. Must be one of #{valid_assertions.join ' '}" unless valid_assertions.include? condition.to_s
+
+      assertion = "assert_validates_attribute_#{condition}"
+      raise "Condition #{condition} not supported yet." unless respond_to? assertion, true
+      send assertion, attribute, value
+    end
+  end
+
   def validating(attr, opts)
     @attribute  = attr
     @validation = opts
@@ -142,5 +166,17 @@ class ActiveSupport::TestCase
     @values.map { |attr,val|
       ":#{attr} set to #{val.nil? ? :nil : (val.blank? ? :blank : val)}"
     }.join "\n"
+  end
+
+  def assert_validates_attribute_is_greater_than(attribute, value)
+    validating attribute, greater_than: { count: value }
+    with attribute => value - 1
+    assert_invalid
+
+    with attribute => value
+    assert_invalid
+
+    with attribute => value + 1
+    assert_valid
   end
 end
