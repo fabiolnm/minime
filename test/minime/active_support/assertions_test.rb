@@ -57,20 +57,18 @@ describe Model, :model do
 
   describe "attribute is greater than a value" do
     it "validates explicit local object" do
-      assert_validates_numericality_of({
-        greater_than_five_attribute: { is_greater_than: 5 }
-      }, Model.new)
+      assert_validates_numericality_of({ gt5_attribute: { is_greater_than: 5 } }, Model.new)
     end
 
     it "validates described model" do
-      assert_validates_numericality_of greater_than_five_attribute: { is_greater_than: 5 }
+      assert_validates_numericality_of gt5_attribute: { is_greater_than: 5 }
     end
 
     describe "explicit subject" do
       subject { Model.new }
 
       it "validates attribute" do
-        assert_validates_numericality_of greater_than_five_attribute: { is_greater_than: 5 }
+        assert_validates_numericality_of gt5_attribute: { is_greater_than: 5 }
       end
     end
   end
