@@ -72,4 +72,22 @@ describe Model, :model do
       end
     end
   end
+
+  describe "attribute is less than or equal to a value" do
+    it "validates explicit local object" do
+      assert_validates_numericality_of({ lte9_attribute: { is_less_than_or_equal_to: 9 } }, Model.new)
+    end
+
+    it "validates described model" do
+      assert_validates_numericality_of lte9_attribute: { is_less_than_or_equal_to: 9 }
+    end
+
+    describe "explicit subject" do
+      subject { Model.new }
+
+      it "validates attribute" do
+        assert_validates_numericality_of lte9_attribute: { is_less_than_or_equal_to: 9 }
+      end
+    end
+  end
 end

@@ -179,4 +179,16 @@ class ActiveSupport::TestCase
     with attribute => value + 1
     assert_valid
   end
+
+  def assert_validates_attribute_is_less_than_or_equal_to(attribute, value)
+    validating attribute, less_than_or_equal_to: { count: value }
+    with attribute => value + 1
+    assert_invalid
+
+    with attribute => value
+    assert_valid
+
+    with attribute => value - 1
+    assert_valid
+  end
 end

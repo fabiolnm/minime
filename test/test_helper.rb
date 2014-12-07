@@ -23,7 +23,8 @@ class Model
     :confirmable_attribute,
     :confirmable_attribute_confirmation,
     :closed_list_attribute,
-    :gt5_attribute
+    :gt5_attribute,
+    :lte9_attribute
 
   validates :required_attribute, presence: true
   validates :confirmable_attribute, confirmation: true
@@ -31,6 +32,7 @@ class Model
   validates :closed_list_attribute, inclusion: { in: 'a'..'c' }
 
   validates :gt5_attribute, numericality: { greater_than: 5 }
+  validates :lte9_attribute, numericality: { less_than_or_equal_to: 9 }
 end
 
 class ApplicationController < ActionController::Base
@@ -42,7 +44,8 @@ class ModelsController < ApplicationController
     @valid_model = Model
       .new required_attribute: 'foo',
         closed_list_attribute: 'a',
-        gt5_attribute: 5.01
+        gt5_attribute: 5.01,
+        lte9_attribute: 8.99
 
     head :ok
   end
