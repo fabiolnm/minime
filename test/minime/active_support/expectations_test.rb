@@ -54,4 +54,22 @@ describe Model, :model do
       end
     end
   end
+
+  describe "attribute is greater than a value" do
+    it "validates explicit local object" do
+      Model.new.must_validate_numericality_of greater_than_five_attribute: { is_greater_than: 5 }
+    end
+
+    it "validates described model" do
+      must_validate_numericality_of greater_than_five_attribute: { is_greater_than: 5 }
+    end
+
+    describe "explicit subject" do
+      subject { Model.new }
+
+      it "validates attribute" do
+        must_validate_numericality_of greater_than_five_attribute: { is_greater_than: 5 }
+      end
+    end
+  end
 end
