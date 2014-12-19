@@ -5,6 +5,8 @@ class ActionController::TestCase
     instance_variable_set "@#{name}", value
   end
 
+  alias :must_protect_actions :assert_protect_actions
+
   def assert_protect_actions(opts)
     redirect_path = opts[:redirecting_to]
     assert redirect_path, 'Missing authorization redirection path'
