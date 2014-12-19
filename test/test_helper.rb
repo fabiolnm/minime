@@ -37,6 +37,11 @@ end
 
 class ApplicationController < ActionController::Base
   include Rails.application.routes.url_helpers
+
+  private
+  def deny_access
+    redirect_to :root, alert: 'Access denied'
+  end
 end
 
 class ModelsController < ApplicationController
@@ -51,6 +56,28 @@ class ModelsController < ApplicationController
   end
 end
 
+class ProtectedResourcesController < ApplicationController
+  before_action :deny_access
+
+  def index   ; end
+  def new     ; end
+  def create  ; end
+  def show    ; end
+  def edit    ; end
+  def update  ; end
+  def destroy ; end
+end
+
+class ProtectedSingularResourcesController < ApplicationController
+  before_action :deny_access
+
+  def new     ; end
+  def create  ; end
+  def show    ; end
+  def edit    ; end
+  def update  ; end
+  def destroy ; end
+end
 
 require "action_mailer/railtie"
 
@@ -92,7 +119,12 @@ I18n.backend.store_translations :en, {
 }
 
 TestApp::Application.routes.draw do
+  root to: 'models#valid'
+
   get 'valid', to: 'models#valid'
+
+  resources :protected_resources
+  resource :protected_singular_resource
 end
 
 require "minitest/rails"
