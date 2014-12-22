@@ -37,6 +37,19 @@ class ActiveSupport::TestCase
     assert_invalid
   end
 
+  def assert_validates_uniqueness_of(attribute, model=nil)
+    with_subject model
+    example = @subject.class.take
+    raise "Please provide an example of #{model.model_name} required by uniqueness test" unless example
+
+    value_to_duplicate = example.send attribute
+
+    validating attribute, :taken
+
+    with({ attribute => value_to_duplicate })
+    assert_invalid
+  end
+
   def assert_validates_confirmation_of(attribute, model=nil)
     validating "#{attribute}_confirmation", confirmation: { attribute: attribute.to_s.humanize }
 

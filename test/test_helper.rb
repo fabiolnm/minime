@@ -13,20 +13,26 @@ module TestApp
   end
 end
 
-require 'active_model'
+require 'active_record'
 
-class Model
-  include ActiveModel::Model
-  include ActiveModel::Validations
+ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: 'db/minime.sqlite3'
 
-  attr_accessor :required_attribute,
-    :confirmable_attribute,
-    :confirmable_attribute_confirmation,
-    :closed_list_attribute,
-    :gt5_attribute,
-    :lte9_attribute
+ActiveRecord::Schema.define do
+  create_table "models", force: :cascade do |t|
+    t.string   "required_attribute"
+    t.string   "unique_attribute"
+    t.string   "confirmable_attribute"
+    t.string   "closed_list_attribute"
+    t.decimal  "gt5_attribute"
+    t.decimal  "lte9_attribute"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+end
 
+class Model < ActiveRecord::Base
   validates :required_attribute, presence: true
+  validates :unique_attribute, uniqueness: true
   validates :confirmable_attribute, confirmation: true
 
   validates :closed_list_attribute, inclusion: { in: 'a'..'c' }
@@ -34,6 +40,9 @@ class Model
   validates :gt5_attribute, numericality: { greater_than: 5 }
   validates :lte9_attribute, numericality: { less_than_or_equal_to: 9 }
 end
+
+# fixture for uniqueness validation test
+Model.new(unique_attribute: :unique_value).save! validate: false
 
 class ApplicationController < ActionController::Base
   include Rails.application.routes.url_helpers

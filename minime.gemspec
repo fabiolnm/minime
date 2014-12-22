@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Minime::VERSION
   spec.authors       = ["Fábio Luiz Nery de Miranda"]
   spec.email         = ["fabio@miranti.net.br"]
-  spec.summary       = "A collection of ActiveSupport assertions and expectations"
+  spec.summary       = "A collection of Rails assertions and expectations"
   spec.description   = ""
   spec.homepage      = ""
   spec.license       = "MIT"
@@ -25,5 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "railties", "~> 4.1"
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "byebug"
 end
