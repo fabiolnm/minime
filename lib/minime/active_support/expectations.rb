@@ -26,6 +26,7 @@ module Minitest::Expectations
   #
   infect_an_assertion :assert_validates_presence_of, :must_validate_presence_of
   infect_an_assertion :assert_validates_uniqueness_of, :must_validate_uniqueness_of
+  infect_an_assertion :assert_has_unique_index, :must_have_unique_index
   infect_an_assertion :assert_validates_confirmation_of, :must_validate_confirmation_of
   infect_an_assertion :assert_validates_inclusion_of, :must_validate_inclusion_of
   infect_an_assertion :assert_validates_numericality_of, :must_validate_numericality_of
