@@ -37,6 +37,24 @@ describe Model, :model do
     end
   end
 
+  describe "attribute with unique index" do
+    it "validates explicit local object" do
+      assert_has_unique_index :unique_attribute, Model.new
+    end
+
+    it "validates described model" do
+      assert_has_unique_index :unique_attribute
+    end
+
+    describe "explicit subject" do
+      subject { Model.new }
+
+      it "validates attribute" do
+        assert_has_unique_index :unique_attribute
+      end
+    end
+  end
+
   describe "attribute confirmation" do
     it "validates explicit local object" do
       assert_validates_confirmation_of :confirmable_attribute, Model.new

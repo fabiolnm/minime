@@ -28,6 +28,8 @@ ActiveRecord::Schema.define do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
   end
+
+  add_index :models, :unique_attribute, unique: true
 end
 
 class Model < ActiveRecord::Base
