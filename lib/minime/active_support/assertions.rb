@@ -63,9 +63,12 @@ class ActiveSupport::TestCase
   end
 
   def assert_validates_confirmation_of(attribute, model=nil)
-    validating "#{attribute}_confirmation", confirmation: { attribute: attribute.to_s.humanize }
-
     with_subject model
+
+    validating "#{attribute}_confirmation", confirmation: {
+      attribute: @subject.class.human_attribute_name(attribute)
+    }
+
     with({ attribute => '123', "#{attribute}_confirmation" => '456' })
     assert_invalid
 
