@@ -33,8 +33,10 @@ class ActiveSupport::TestCase
     with({ attribute => nil })
     assert_invalid
 
-    with({ attribute => "" })
-    assert_invalid
+    unless @subject.respond_to? "#{attribute}_id"
+      with({ attribute => "" })
+      assert_invalid
+    end
   end
 
   def assert_validates_uniqueness_of(attribute, model=nil)
