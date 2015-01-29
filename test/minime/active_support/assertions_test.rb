@@ -126,4 +126,33 @@ describe Model, :model do
       end
     end
   end
+
+  describe "attribute format" do
+    it "validates explicit local object" do
+      assert_validates_format_of({
+        three_letters_format_attribute: {
+          valid_examples: %w{ABC abc Abc 123 A12},
+          invalid_examples: %w{ab abcd a@1 12!}
+        }
+      }, Model.new)
+    end
+
+    it "validates described model" do
+      assert_validates_format_of three_letters_format_attribute: {
+        valid_examples: %w{ABC abc Abc 123 A12},
+        invalid_examples: %w{ab abcd a@1 12!}
+      }
+    end
+
+    describe "explicit subject" do
+      subject { Model.new }
+
+      it "validates attribute" do
+        assert_validates_format_of three_letters_format_attribute: {
+          valid_examples: %w{ABC abc Abc 123 A12},
+          invalid_examples: %w{ab abcd a@1 12!}
+        }
+      end
+    end
+  end
 end

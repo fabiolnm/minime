@@ -131,6 +131,27 @@ class ActiveSupport::TestCase
     end
   end
 
+  def assert_validates_format_of(opts, model=nil)
+    assert opts.is_a?(Hash),
+      "Format options must be in form { attribute => { valid_examples: [...], invalid_examples: [...] }"
+
+    attribute = opts.keys.first
+    opts = opts[attribute]
+
+    with_subject model
+    validating attribute, :invalid
+
+    (opts[:valid_examples] || []).each do |example|
+      with attribute => example
+      assert_valid
+    end
+
+    (opts[:invalid_examples] || []).each do |example|
+      with attribute => example
+      assert_invalid
+    end
+  end
+
   def validating(attr, opts)
     @attribute  = attr
     @validation = opts

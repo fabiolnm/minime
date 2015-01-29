@@ -26,6 +26,7 @@ ActiveRecord::Schema.define do
     t.string   "closed_list_attribute"
     t.decimal  "gt5_attribute"
     t.decimal  "lte9_attribute"
+    t.string   "three_letters_format_attribute"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
   end
@@ -42,6 +43,8 @@ class Model < ActiveRecord::Base
 
   validates :gt5_attribute, numericality: { greater_than: 5 }
   validates :lte9_attribute, numericality: { less_than_or_equal_to: 9 }
+
+  validates :three_letters_format_attribute, format: { with: /\A\w{3}\z/ }
 end
 
 # fixture for uniqueness validation test
@@ -62,7 +65,8 @@ class ModelsController < ApplicationController
       .new required_attribute: 'foo',
         closed_list_attribute: 'a',
         gt5_attribute: 5.01,
-        lte9_attribute: 8.99
+        lte9_attribute: 8.99,
+        three_letters_format_attribute: 'A1b'
 
     head :ok
   end
