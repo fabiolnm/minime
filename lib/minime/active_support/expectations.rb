@@ -30,4 +30,5 @@ module Minitest::Expectations
   infect_an_assertion :assert_validates_confirmation_of, :must_validate_confirmation_of
   infect_an_assertion :assert_validates_inclusion_of, :must_validate_inclusion_of
   infect_an_assertion :assert_validates_numericality_of, :must_validate_numericality_of
+  infect_an_assertion :assert_validates_format_of, :must_validate_format_of
 end
