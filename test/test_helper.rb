@@ -1,3 +1,4 @@
+require "rack/test"
 require "rails"
 require "rails/test_help"
 
