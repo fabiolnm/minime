@@ -155,4 +155,106 @@ describe Model, :model do
       end
     end
   end
+
+  describe "attribute length" do
+    describe "minimum" do
+      it "validates explicit local object" do
+        assert_validates_length_of({
+          minimum_length_attribute: { minimum: 5 }
+        }, Model.new)
+      end
+
+      it "validates described model" do
+        assert_validates_length_of minimum_length_attribute: { minimum: 5 }
+      end
+
+      describe "explicit subject" do
+        subject { Model.new }
+
+        it "is validated" do
+          assert_validates_length_of minimum_length_attribute: { minimum: 5 }
+        end
+      end
+    end
+
+    describe "maximum" do
+      it "validates explicit local object" do
+        assert_validates_length_of({
+          maximum_length_attribute: { maximum: 5 }
+        }, Model.new)
+      end
+
+      it "validates described model" do
+        assert_validates_length_of maximum_length_attribute: { maximum: 5 }
+      end
+
+      describe "explicit subject" do
+        subject { Model.new }
+
+        it "is validated" do
+          assert_validates_length_of maximum_length_attribute: { maximum: 5 }
+        end
+      end
+    end
+
+    describe "range" do
+      describe "in" do
+        it "validates explicit local object" do
+          assert_validates_length_of({
+            range_in_length_attribute: { in: 3..5 }
+          }, Model.new)
+        end
+
+        it "validates described model" do
+          assert_validates_length_of range_in_length_attribute: { in: 3..5 }
+        end
+
+        describe "explicit subject" do
+          subject { Model.new }
+
+          it "is validated" do
+            assert_validates_length_of range_in_length_attribute: { in: 3..5 }
+          end
+        end
+      end
+
+      describe "within" do
+        it "validates explicit local object" do
+          assert_validates_length_of({
+            range_within_length_attribute: { within: 3..5 }
+          }, Model.new)
+        end
+
+        it "validates described model" do
+          assert_validates_length_of range_within_length_attribute: { within: 3..5 }
+        end
+
+        describe "explicit subject" do
+          subject { Model.new }
+
+          it "is validated" do
+            assert_validates_length_of range_within_length_attribute: { within: 3..5 }
+          end
+        end
+      end
+    end
+
+    describe "exact" do
+      it "validates explicit local object" do
+        assert_validates_length_of({ exact_length_attribute: { is: 5 } }, Model.new)
+      end
+
+      it "validates described model" do
+        assert_validates_length_of exact_length_attribute: { is: 5 }
+      end
+
+      describe "explicit subject" do
+        subject { Model.new }
+
+        it "is validated" do
+          assert_validates_length_of exact_length_attribute: { is: 5 }
+        end
+      end
+    end
+  end
 end

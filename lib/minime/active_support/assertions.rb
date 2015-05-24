@@ -133,7 +133,7 @@ class ActiveSupport::TestCase
 
   def assert_validates_format_of(opts, model=nil)
     assert opts.is_a?(Hash),
-      "Format options must be in form { attribute => { valid_examples: [...], invalid_examples: [...] }"
+      "Format options must be in form { attribute => { valid_examples: [...], invalid_examples: [...] } }"
 
     attribute = opts.keys.first
     opts = opts[attribute]
@@ -149,6 +149,47 @@ class ActiveSupport::TestCase
     (opts[:invalid_examples] || []).each do |example|
       with attribute => example
       assert_invalid
+    end
+  end
+
+  def assert_validates_length_of(opts, model=nil)
+    assert opts.is_a?(Hash),
+      "Length options must be in form { attribute => { minimum: value, maximum: value } }"
+
+    attribute = opts.keys.first
+    opts = opts[attribute]
+    with_subject model
+
+    if range = opts.delete(:in) || opts.delete(:within)
+      opts[:minimum] = range.begin
+      opts[:maximum] = range.end
+    end
+
+    opts.each do |k,v|
+      examples = case k
+                 when :minimum
+                   { too_short:     { invalid: v - 1, valid: v } }
+                 when :maximum
+                   { too_long:      { invalid: v + 1, valid: v } }
+                 when :is
+                   { wrong_length:  { invalid: [ v - 1, v + 1 ], valid: v } }
+                 else
+                   raise "Option not recognized: #{k}"
+                 end
+
+      examples.each do |error_key, test_values|
+        [test_values[:invalid]].flatten.each do |value|
+          validating attribute, error_key => { count: v }
+          with attribute => '*' * value
+          assert_invalid
+        end
+
+        [test_values[:valid]].flatten.each do |value|
+          validating attribute, error_key => { count: v }
+          with attribute => '*' * value
+          assert_valid
+        end
+      end
     end
   end
 

@@ -27,6 +27,12 @@ ActiveRecord::Schema.define do
     t.decimal  "gt5_attribute"
     t.decimal  "lte9_attribute"
     t.string   "three_letters_format_attribute"
+    t.string   "minimum_length_attribute"
+    t.string   "maximum_length_attribute"
+    t.string   "range_within_length_attribute"
+    t.string   "range_in_length_attribute"
+    t.string   "exact_length_attribute"
+
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
   end
@@ -45,6 +51,12 @@ class Model < ActiveRecord::Base
   validates :lte9_attribute, numericality: { less_than_or_equal_to: 9 }
 
   validates :three_letters_format_attribute, format: { with: /\A\w{3}\z/ }
+
+  validates :minimum_length_attribute,      length: { minimum:  5     }
+  validates :maximum_length_attribute,      length: { maximum:  5     }
+  validates :range_within_length_attribute, length: { within:   3..5  }
+  validates :range_in_length_attribute,     length: { in:       3..5  }
+  validates :exact_length_attribute,        length: { is:       5     }
 end
 
 # fixture for uniqueness validation test
@@ -66,7 +78,12 @@ class ModelsController < ApplicationController
         closed_list_attribute: 'a',
         gt5_attribute: 5.01,
         lte9_attribute: 8.99,
-        three_letters_format_attribute: 'A1b'
+        three_letters_format_attribute: 'A1b',
+        minimum_length_attribute: '*' * 5,
+        maximum_length_attribute: '*' * 5,
+        range_within_length_attribute: '*' * 5,
+        range_in_length_attribute: '*' * 5,
+        exact_length_attribute: '*' * 5
 
     head :ok
   end
