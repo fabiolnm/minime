@@ -165,32 +165,7 @@ class ActiveSupport::TestCase
       opts[:maximum] = range.end
     end
 
-    opts.each do |k,v|
-      examples = case k
-                 when :minimum
-                   { too_short:     { invalid: v - 1, valid: v } }
-                 when :maximum
-                   { too_long:      { invalid: v + 1, valid: v } }
-                 when :is
-                   { wrong_length:  { invalid: [ v - 1, v + 1 ], valid: v } }
-                 else
-                   raise "Option not recognized: #{k}"
-                 end
-
-      examples.each do |error_key, test_values|
-        [test_values[:invalid]].flatten.each do |value|
-          validating attribute, error_key => { count: v }
-          with attribute => '*' * value
-          assert_invalid
-        end
-
-        [test_values[:valid]].flatten.each do |value|
-          validating attribute, error_key => { count: v }
-          with attribute => '*' * value
-          assert_valid
-        end
-      end
-    end
+    assert_validates_length_examples attribute, opts
   end
 
   def validating(attr, opts)
@@ -282,5 +257,38 @@ class ActiveSupport::TestCase
 
     with attribute => value - 1
     assert_valid
+  end
+
+  # minimum: 5, maximum: 10, is: 7
+  def assert_validates_length_examples(attribute, opts)
+    opts.each do |k,v|
+      length_validation_examples(k, v).each do |error_key, test_values|
+        [test_values[:invalid]].flatten.each do |value|
+          validating attribute, error_key => { count: v }
+          with attribute => '*' * value
+          assert_invalid
+        end
+
+        [test_values[:valid]].flatten.each do |value|
+          validating @attribute, error_key => { count: v }
+          with attribute => '*' * value
+          assert_valid
+        end
+      end
+    end
+  end
+
+  def length_validation_examples(type, constraint)
+    v = constraint
+    case type
+    when :minimum
+      { too_short:     { invalid: v - 1, valid: v } }
+    when :maximum
+      { too_long:      { invalid: v + 1, valid: v } }
+    when :is
+      { wrong_length:  { invalid: [ v - 1, v + 1 ], valid: v } }
+    else
+      raise "Option not recognized: #{type}"
+    end
   end
 end
